@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import cors from 'cors'
+import commentRoutes from './routes/commentRouter.js'
 
 dotenv.config()
 
@@ -30,6 +31,8 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
+
+app.use('/comments',commentRoutes)
 
 // Start the server
 const port = process.env.PORT || 3000;
