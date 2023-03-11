@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import cors from 'cors'
 import commentRoutes from './routes/commentRouter.js'
+import userRoutes from './routes/userRouter.js'
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/comments',commentRoutes)
+app.use('/users',userRoutes)
 
 // Start the server
 const port = process.env.PORT || 3000;
