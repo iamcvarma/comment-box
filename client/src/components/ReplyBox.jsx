@@ -23,21 +23,23 @@ const ReplyBox = ({parentId="",onSumbit,content='', isEdit=false}) => {
       if (onSumbit) onSumbit()
     };
   return (
-    <div className="flex flex-col max-w-[35rem]  mx-2 ">
+    <div className="flex flex-col max-w-[35rem]  m-2 ">
       <div className="relative flex items-center">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="block w-full py-2 px-3 rounded-md border border-gray-300 placeholder-gray-500 text-gray-900  bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
           rows="3"
-          placeholder="Write your reply here..."
+          placeholder={user?"Write your reply here...":"Please log in to reply"}
+          disabled={user?false:true}
         />
       </div>
 
       <div className="flex justify-end">
         <button
-          className="bg-blue-400 rounded-md mt-1 p-2 text-white "
+          className="bg-blue-400 rounded-md mt-1 p-2 text-white hover:bg-blue-500 "
           onClick={handleSubmit}
+          disabled={user?false:true}
         >
           Submit
         </button>

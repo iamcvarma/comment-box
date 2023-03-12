@@ -27,7 +27,7 @@ function App() {
   };
 
   return (
-    <div className="w-full bg-gray-300 md:w-[70%] mx-auto">
+    <div className="w-full bg-white md:w-[70%] mx-auto">
       <div className="flex flex-col w-full ">
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <UserContext.Provider value={{ user }}>
