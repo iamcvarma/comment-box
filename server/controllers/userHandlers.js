@@ -1,9 +1,9 @@
 import User from "../models/User.js";
 
-export const getPictureURL = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
-    const { id: userId } = req.params;
-    const userData = await User.findOne({ userId: userId });
+    const { id } = req.params;
+    const userData = await User.findById(id)
     if (!userData) {
       return res.status(400).json({ error: "user not found" });
     }
@@ -15,17 +15,24 @@ export const getPictureURL = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { userId, profileURL } = req.body;
-    if (!userId || !profileURL) {
-      return res.status(400).json({ error: "userId or profileURL is missing" });
+    const { email,name, picture } = req.body;
+    console.log(email,name,picture)
+    if (!name || !picture || !email) {
+      return res.status(400).json({ error: "name or picture or email field is missing" });
     }
 
-    const user = await User.findOneAndUpdate(
-      { userId },
-      { profileURL },
-      { new: true, upsert: true }
-    );
-    res.status(200).json(user)
+    const userData = await User.findOne({ email: email });
+    if (userData){
+      return res.status(200).json(userData)
+    }
+    const newUser = new User({
+      email:email,
+      name:name,
+      profileURL:picture
+    })
+    await newUser.save()
+    console.log('done')
+    return res.status(200).json(newUser)
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
