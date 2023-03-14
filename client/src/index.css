@@ -7,6 +7,17 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: rgb(194, 238, 188);
+  background-color: rgb(202, 222, 255);
 }
 
+button {
+  padding: 0.3rem 0.5rem ;
+  background-color: rgb(245, 243, 255);
+  border-radius:10px;
+  color: darkblue;
+  
+}
+button:hover {
+  background-color: rgb(116, 158, 229);
+  color:white
+}

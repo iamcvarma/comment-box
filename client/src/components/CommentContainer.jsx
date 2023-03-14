@@ -19,14 +19,13 @@ const CommentContainer = () => {
     <CommentContext.Provider value={{ setComments }}>
       <div className="w-full flex flex-col items-center">
         <h1 className="text-xl">Comment Section</h1>
-        <div className="w-full"> 
+        <div className="w-full">
           {comments.map((comment) => (
             <CommentBox {...comment} key={comment._id} />
           ))}
         </div>
         <div className="w-full">
-
-        <ReplyBox  />
+          <ReplyBox />
         </div>
       </div>
     </CommentContext.Provider>

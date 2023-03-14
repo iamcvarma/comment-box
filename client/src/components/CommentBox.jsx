@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
+import CommentContext from "../store/CommentContext";
 import UserContext from "../store/UserContext";
 import ReplyBox from "./ReplyBox";
-import UpvoteBox from "./UpvoteBox";  
+import UpvoteBox from "./UpvoteBox";
 const CommentBox = ({ _id, userId, content, upvotes, replies }) => {
   const [userName, setUserName] = useState("");
   const [userPicture, setUserPicture] = useState("");
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [showEditBox, setShowEditBox] = useState(false);
   const { user } = useContext(UserContext);
+  const { setComments } = useContext(CommentContext);
   useEffect(() => {
     const getUserData = async (userID) => {
       const res = await fetch(
@@ -19,8 +21,18 @@ const CommentBox = ({ _id, userId, content, upvotes, replies }) => {
     };
     getUserData(userId);
   }, []);
+  const handleDelete = async () => {
+    const res = await fetch(
+      `${import.meta.env.VITE_SERVER_BASE_URL}/comments/${_id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    const data = await res.json();
+    setComments(data);
+  };
   return (
-    <div className="max-w-full flex flex-col ml-7 box-border">
+    <div className="max-w-full flex flex-col ml-7 box-border mr-2">
       <div className="flex flex-row max-w-full ">
         <div className="p-1">
           <img
@@ -37,15 +49,27 @@ const CommentBox = ({ _id, userId, content, upvotes, replies }) => {
             </div>
           </div>
           <div className="flex flex-row gap-2 p-2">
-            <UpvoteBox upvotes={upvotes} id={_id}/>
-            <button onClick={() => setShowReplyBox((pre) => !pre)} className="bg-slate-100 p-1 hover:bg-slate-200 rounded-lg">
-            
+            <UpvoteBox upvotes={upvotes} id={_id} />
+            <button
+              onClick={() => {
+                setShowEditBox(false);
+                setShowReplyBox((pre) => !pre);
+              }}
+            >
               <span>Reply</span>
             </button>
             {user?._id === userId && (
-              <button onClick={() => setShowEditBox((pre) => !pre)}>
+              <button
+                onClick={() => {
+                  setShowReplyBox(false);
+                  setShowEditBox((pre) => !pre);
+                }}
+              >
                 Edit
               </button>
+            )}
+            {user?._id === userId && content !== "[deleted]" && (
+              <button onClick={handleDelete}>Delete</button>
             )}
           </div>
           {showReplyBox && (
@@ -62,7 +86,7 @@ const CommentBox = ({ _id, userId, content, upvotes, replies }) => {
         </div>
       </div>
       {replies.map((comment) => (
-        <CommentBox {...comment} key = {comment._id}/>
+        <CommentBox {...comment} key={comment._id} />
       ))}
     </div>
   );

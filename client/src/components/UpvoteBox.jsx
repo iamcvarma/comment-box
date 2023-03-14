@@ -3,7 +3,7 @@ import CommentContext from "../store/CommentContext";
 
 const UpvoteBox = ({ upvotes, id }) => {
   const [isUpvoted, setIsUpvoted] = useState(false);
-  const [isDownvoted,setIsDownvoted] = useState(false)
+  const [isDownvoted, setIsDownvoted] = useState(false);
   const { setComments } = useContext(CommentContext);
   const handleUpvote = async () => {
     const res = await fetch(
@@ -17,6 +17,7 @@ const UpvoteBox = ({ upvotes, id }) => {
     const data = await res.json();
     setComments(data);
     setIsUpvoted((pre) => !pre);
+    setIsDownvoted(false)
   };
 
   const handleDownvote = async () => {
@@ -31,11 +32,14 @@ const UpvoteBox = ({ upvotes, id }) => {
     const data = await res.json();
     setComments(data);
     setIsDownvoted((pre) => !pre);
+    setIsUpvoted(false)
   };
   return (
     <div className="flex gap-2 ">
       <button
-        className={`flex items-center rounded-lg hover:bg-orange-300 px-1 ${isUpvoted?"bg-orange-500":""}`}
+        className={`flex items-center rounded-lg hover:bg-orange-300 px-1 ${
+          isUpvoted ? "bg-orange-500" : ""
+        }`}
         onClick={handleUpvote}
       >
         <svg
@@ -59,8 +63,11 @@ const UpvoteBox = ({ upvotes, id }) => {
       </button>
       {upvotes}
       <button
-      onClick={handleDownvote}
-      className={`flex items-center rounded-lg hover:bg-blue-300 px-1 ${isDownvoted?"bg-blue-500":""}`}>
+        onClick={handleDownvote}
+        className={`flex items-center rounded-lg hover:bg-blue-300 px-1 ${
+          isDownvoted ? "bg-blue-500" : ""
+        }`}
+      >
         <svg
           fill="#000000"
           width="20px"

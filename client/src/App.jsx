@@ -7,6 +7,7 @@ import UserContext from "./store/UserContext";
 
 function App() {
   const [user, setUser] = useState(null);
+  
   const handleLogin = async (response) => {
     const decoded = jwt_decode(response.credential);
     const { name, picture, email } = decoded;
