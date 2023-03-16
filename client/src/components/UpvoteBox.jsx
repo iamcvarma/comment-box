@@ -6,6 +6,16 @@ const UpvoteBox = ({ upvotes, id }) => {
   const [isDownvoted, setIsDownvoted] = useState(false);
   const { setComments } = useContext(CommentContext);
   const handleUpvote = async () => {
+    if (isDownvoted){
+      await fetch(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/comments/${id}/${
+          isUpvoted ? "downvote" : "upvote"
+        }`,
+        {
+          method: "PATCH",
+        }
+      );
+    }
     const res = await fetch(
       `${import.meta.env.VITE_SERVER_BASE_URL}/comments/${id}/${
         isUpvoted ? "downvote" : "upvote"
@@ -17,10 +27,20 @@ const UpvoteBox = ({ upvotes, id }) => {
     const data = await res.json();
     setComments(data);
     setIsUpvoted((pre) => !pre);
-    setIsDownvoted(false)
+    setIsDownvoted(false);
   };
 
   const handleDownvote = async () => {
+    if (isUpvoted) {
+       await fetch(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/comments/${id}/${
+          isDownvoted ? "upvote" : "downvote"
+        }`,
+        {
+          method: "PATCH",
+        }
+      );
+    }
     const res = await fetch(
       `${import.meta.env.VITE_SERVER_BASE_URL}/comments/${id}/${
         isDownvoted ? "upvote" : "downvote"
@@ -32,7 +52,7 @@ const UpvoteBox = ({ upvotes, id }) => {
     const data = await res.json();
     setComments(data);
     setIsDownvoted((pre) => !pre);
-    setIsUpvoted(false)
+    setIsUpvoted(false);
   };
   return (
     <div className="flex gap-2 ">
